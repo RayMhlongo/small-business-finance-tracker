@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Business Finance Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+</head>
+<body>
+  <header class="l-header">
+    <nav class="nav bd-grid">
+      <a href="#home" class="nav-logo">Business Finance Tracker</a>
+      <div class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#home" class="nav-link active">Dashboard</a></li>
+          <li class="nav-item"><a href="#transactions" class="nav-link">Transactions</a></li>
+          <li class="nav-item"><a href="#invoices" class="nav-link">Invoices</a></li>
+          <li class="nav-item"><a href="#reports" class="nav-link">Reports</a></li>
+          <li class="nav-item"><a href="#backup" class="nav-link">Backup</a></li>
+        </ul>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu">Menu</button>
+    </nav>
+  </header>
+
+  <main class="l-main">
+    <section class="home bd-grid" id="home">
+      <div class="home-data">
+        <p class="eyebrow">Small business bookkeeping</p>
+        <h1 class="home-title">Manage <span class="home-title-color">revenue</span>, costs, profit and invoices.</h1>
+        <a href="#transactions" class="button">Add Transaction</a>
+      </div>
+      <div class="summary-panel">
+        <div><span>Total Revenue</span><strong id="total-revenue">R0.00</strong></div>
+        <div><span>Total Expenses</span><strong id="total-expenses">R0.00</strong></div>
+        <div><span>Profit</span><strong id="total-profit">R0.00</strong></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Category Insights</h2>
+      <div class="bd-grid insight-grid">
+        <div class="card">
+          <h3>Expense Breakdown</h3>
+          <canvas id="expense-chart" width="640" height="300"></canvas>
+        </div>
+        <div class="table-wrap">
+          <h3>Category Totals</h3>
+          <table>
+            <thead><tr><th>Category</th><th>Total</th></tr></thead>
+            <tbody id="category-insights"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="transactions">
+      <h2 class="section-title">Transactions</h2>
+      <div class="form-grid bd-grid">
+        <form id="transaction-form" class="card form-card">
+          <label>Type
+            <select id="transaction-type" required>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </label>
+          <label>Category<input id="transaction-category" required placeholder="Sales, rent, supplies"></label>
+          <label>Description<input id="transaction-description" required placeholder="Customer order, shop rent"></label>
+          <label>Amount<input id="transaction-amount" required type="number" min="0" step="0.01"></label>
+          <label>Date<input id="transaction-date" required type="date"></label>
+          <button class="button" type="submit">Save Transaction</button>
+        </form>
+        <div class="table-wrap">
+          <h3>Transaction Records</h3>
+          <table>
+            <thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead>
+            <tbody id="transaction-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="invoices">
+      <h2 class="section-title">Invoices</h2>
+      <div class="form-grid bd-grid">
+        <form id="invoice-form" class="card form-card">
+          <label>Business name<input id="invoice-business" value="Business Name Placeholder" required></label>
+          <label>Customer name<input id="invoice-customer" required placeholder="Customer name"></label>
+          <label>Item<input id="invoice-item" required placeholder="Product or service"></label>
+          <label>Amount<input id="invoice-amount" required type="number" min="0" step="0.01"></label>
+          <label>Date<input id="invoice-date" required type="date"></label>
+          <button class="button" type="submit">Create Invoice</button>
+        </form>
+        <div class="table-wrap">
+          <h3>Invoices</h3>
+          <table>
+            <thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Total</th><th>Actions</th></tr></thead>
+            <tbody id="invoice-list"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reports">
+      <h2 class="section-title">Reports</h2>
+      <div class="bd-grid report-grid">
+        <form id="report-form" class="card form-card">
+          <label>Month<input id="report-month" type="month" required></label>
+          <button class="button" type="submit">View Monthly Report</button>
+          <button class="button button-outline" id="export-report-pdf" type="button">Export Monthly Expense Report PDF</button>
+        </form>
+        <div class="table-wrap">
+          <h3 id="report-title">Monthly Summary</h3>
+          <table>
+            <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+            <tbody id="monthly-summary"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="backup">
+      <h2 class="section-title">Backup</h2>
+      <div class="backup-panel bd-grid">
+        <div class="card">
+          <h3>Google Drive friendly backup</h3>
+          <p>Export a JSON file and upload it to Google Drive. Import the same file later to restore this browser data.</p>
+          <div class="actions">
+            <button class="button" id="export-json" type="button">Export JSON</button>
+            <label class="button button-outline" for="import-json">Import JSON</label>
+            <input id="import-json" class="file-input" type="file" accept="application/json">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-title">Small Business Finance Tracker</p>
+    <p>Static localStorage app for GitHub Pages.</p>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/invoices.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
